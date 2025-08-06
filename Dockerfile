@@ -9,7 +9,7 @@ RUN apt-get update && apt install -y apt-transport-https ca-certificates
 # echo "deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free" >> /etc/apt/sources.list && \
 # apt-get clean && apt-get update
 
-RUN apt-get install -y vim iputils-ping htop wget sudo curl tcpdump net-tools openssh-server libpcap-dev libbpf-dev gcc git jq
+RUN apt-get install -y vim iputils-ping htop wget sudo curl tcpdump net-tools openssh-server libpcap-dev libbpf-dev gcc git jq make
 
 ENV USER_NAME=op1
 ENV USER_HOME=/home/$USER_NAME

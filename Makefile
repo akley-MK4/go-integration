@@ -2,7 +2,7 @@ all: test-run
 
 GO_VER = 1.24
 IMAGE_NAME = go$(GO_VER)-integration
-IMAGE_VER = v1.5.0
+IMAGE_VER = v1.5.1
 CONTAINER_NAME = go$(GO_VER)-integration
 MAPPING_SSH_PORT = 30002
 DOCKERFILE_PATH = $(PWD)/Dockerfile

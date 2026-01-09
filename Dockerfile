@@ -32,9 +32,9 @@ WORKDIR $USER_HOME
 
 # Kubebuilder
 ENV KUBEBUILDER_VER=v4.7.1
-RUN wget -O ./kubebuilder --no-check-certificate https://github.com/kubernetes-sigs/kubebuilder/releases/download/${KUBEBUILDER_VER}/kubebuilder_linux_amd64
-#COPY ./kubebuilder ./kubebuilder
-RUN chmod +x kubebuilder && mv ./kubebuilder /usr/local/bin/
+#RUN wget -O ./kubebuilder --no-check-certificate https://github.com/kubernetes-sigs/kubebuilder/releases/download/${KUBEBUILDER_VER}/kubebuilder_linux_amd64
+COPY ./kubebuilder_linux_amd64 /usr/local/bin/kubebuilder
+RUN chmod +x /usr/local/bin/kubebuilder
 
 # kubectl
 ENV KUBECTL_VER=v1.33.3
@@ -44,17 +44,19 @@ RUN chmod +x kubectl && mv ./kubectl /usr/local/bin/
 
 RUN git config --global http.sslVerify false
 
+# Go Environment
+RUN echo "export GOROOT=${GOROOT}" >> /etc/profile && \
+echo "export GOBIN=${GOBIN}" >> /etc/profile && \
+echo "export GOMODCACHE=${GOMODCACHE}" >> /etc/profile && \
+echo "export GOPATH=${GOPATH}" >> /etc/profile && \
+echo "export PATH=$GOPATH/bin:$GOROOT/bin:$USER_BIN:$PATH" >> /etc/profile
+
 USER $USER_NAME
 
 RUN mkdir -p bin go_sdks go_env/bin go_project_mapping go_project_local out_comp configs daemon-app-src .kube
-RUN yes | ssh-keygen -f ~/.ssh/id_rsa && touch ~/.ssh/authorized_keys
 
-# Go Environment
-RUN echo "export GOROOT=${GOROOT}" >> ~/.bashrc && \
-echo "export GOBIN=${GOBIN}" >> ~/.bashrc && \
-echo "export GOMODCACHE=${GOMODCACHE}" >> ~/.bashrc && \
-echo "export GOPATH=${GOPATH}" >> ~/.bashrc && \
-echo "export PATH=$GOPATH/bin:$GOROOT/bin:$USER_BIN:$PATH" >> ~/.bashrc
+RUN echo "${USER_PWD}" | sudo -S chmod 777 go_sdks go_env
+RUN yes | ssh-keygen -f ~/.ssh/id_rsa && touch ~/.ssh/authorized_keys
 
 #RUN wget -O $USER_HOME/go_sdks/$GO_SDK_VER.tar.gz --no-check-certificate https://golang.google.cn/dl/${GO_SDK_VER}.linux-amd64.tar.gz
 # If you are unable to download the GO SDK, you can also copy it directly from your local device.

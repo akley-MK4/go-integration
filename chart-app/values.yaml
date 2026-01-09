@@ -8,7 +8,7 @@ image:
   repository: go1.24-integration
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v1.5.0"
+  tag: "v1.5.1"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -31,7 +31,8 @@ podLabels: {}
 podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  privileged: true
   # capabilities:
   #   drop:
   #   - ALL
